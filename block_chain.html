@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Blockchain Voting System</title>
+</head>
+<body>
+    <h2>Blockchain Voting System</h2>
+    <form id="voteForm" action="/vote" method="post">
+        <label for="voter_id">Voter ID:</label>
+        <input type="text" id="voter_id" name="voter_id" required><br><br>
+        
+        <label for="candidate">Candidate:</label>
+        <input type="text" id="candidate" name="candidate" required><br><br>
+        
+        <input type="submit" value="Submit Vote">
+    </form>
+
+    <br>
+    <button onclick="mine()">Mine a new Block</button>
+    <br><br>
+
+    <div id="chain"></div>
+
+    <script>
+        function mine() {
+            fetch('/mine')
+            .then(response => response.json())
+            .then(data => {
+                alert(data.message);
+                getChain();
+            });
+        }
+
+        function getChain() {
+            fetch('/chain')
+            .then(response => response.json())
+            .then(data => {
+                const chain = JSON.stringify(data.chain, null, 4);
+                document.getElementById('chain').innerHTML = `<pre>${chain}</pre>`;
+            });
+        }
+
+        getChain();
+    </script>
+</body>
+</html>
